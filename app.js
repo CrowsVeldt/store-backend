@@ -14,6 +14,8 @@ const categoriesRouter = require("./routes/categories.routes");
 const productsRouter = require("./routes/products.routes");
 const refreshRouter = require("./routes/refresh.routes");
 const mailRouter = require("./routes/email.routes");
+const paymentsRouter = require("./routes/payments.routes");
+const ordersRouter = require("./routes/orders.routes");
 
 const app = express();
 // view engine setup
@@ -34,6 +36,8 @@ app.use("/categories", categoriesRouter);
 app.use("/products", productsRouter);
 app.use("/refresh", refreshRouter);
 app.use("/mailer", mailRouter);
+app.use("/payments", paymentsRouter);
+app.use("/orders", ordersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
