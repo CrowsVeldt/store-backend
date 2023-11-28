@@ -169,6 +169,8 @@ const updateCustomer = async (req, res, next) => {
         user: {
           _id: user._id,
           user_name: user.user_name,
+          user_phone: user.user_phone,
+          user_address: user.user_address,
           user_email: user.user_email,
           user_avatar: user.user_avatar,
         },
