@@ -140,7 +140,35 @@ const updatePassword = async (req, res, next) => {
   }
 };
 
+const sendSupportTicket = async (req, res, next) => {
+  const { user_email, user_name, message } = req.body;
+
+  try {
+    const emailOptions = {
+      to: "storemail370@gmail.com",
+      subject: `New support request from user ${user_email}`,
+      html: `<p>name: ${user_name}</p>
+               <p>email: ${user_email}</p>
+               <p>message: ${message}</p>`,
+    };
+
+    transporter.sendMail(emailOptions, (error, info) => {
+      if (error) {
+        res.status(400).send({
+          status: "400",
+          success: false,
+        });
+      } else {
+        res.sendStatus(201).send({ status: 201, message: "email was sent" });
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
+  sendSupportTicket,
   sendResetLink,
   forgotPassword,
   updatePassword,
