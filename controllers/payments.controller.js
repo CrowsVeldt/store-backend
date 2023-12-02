@@ -12,6 +12,7 @@ const createPayment = async (req, res, next) => {
     order_details,
   } = req.body;
 
+  console.log(order_details);
   const { userId: user, customer_details, products } = order_details;
 
   const expiration_month = expDate.slice(0, 2);
@@ -46,7 +47,9 @@ const createPayment = async (req, res, next) => {
 
   try {
     const response = await makeRequest("POST", "/v1/payments", requestBody);
-    const { redirect_url: redirectUrl, id: paymentId } = response.body.data;
+    const { id: paymentId, redirect_url: redirectUrl } = response.body.data;
+
+    const last_digits = creditNumber.slice(-4);
 
     const order = await Order.create({
       user,
@@ -55,7 +58,7 @@ const createPayment = async (req, res, next) => {
         transaction_number: paymentId.split("_")[1],
         terminal_number: "123456789",
         transaction_date: response.body.data.created_at,
-        last_digits: creditNumber.slice(-4),
+        last_digits,
       },
       products,
     });

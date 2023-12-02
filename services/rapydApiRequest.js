@@ -7,8 +7,7 @@ const log = false;
 async function makeRequest(method, urlPath, body = null) {
   try {
     httpMethod = method; // get|put|post|delete - must be lowercase.
-    // https://sandboxapi.rapyd.net/v1
-    httpBaseURL = "sandboxapi.rapyd.net";
+    httpBaseURL = "sandboxapi.rapyd.net"; // https://sandboxapi.rapyd.net/v1
     httpURLPath = urlPath; // Portion after the base URL.
     salt = generateRandomString(8); // Randomly generated for each request.
     idempotency = new Date().getTime().toString();
@@ -100,9 +99,7 @@ async function httpRequest(options, body) {
         res.on("end", () => {
           if (response.statusCode !== 200) {
             response.body = response.body;
-          } else {
-            response.body = response.body ? JSON.parse(response.body) : {};
-          }
+          } else response.body = response.body ? JSON.parse(response.body) : {};
           log &&
             console.log(`httpRequest response: ${JSON.stringify(response)}`);
 
