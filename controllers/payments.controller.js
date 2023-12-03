@@ -9,11 +9,12 @@ const createPayment = async (req, res, next) => {
     creditNumber,
     expDate,
     cvv,
-    order_details,
+    orderDetails,
   } = req.body;
 
-  console.log(order_details);
-  const { userId: user, customer_details, products } = order_details;
+  console.log(req.body);
+  const { userId, customer_details, products } = orderDetails;
+  const user = userId;
 
   const expiration_month = expDate.slice(0, 2);
   const expiration_year = expDate.slice(-2);
@@ -29,7 +30,7 @@ const createPayment = async (req, res, next) => {
     payment_method: {
       type: "il_visa_card",
       fields: {
-        number: creditNumber || "4111111111111111",
+        number: creditNumber, //|| "4111111111111111",
         expiration_month,
         expiration_year,
         name: userDetails.user_name,
