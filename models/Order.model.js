@@ -42,7 +42,7 @@ const orderSchema = new mongoose.Schema({
     transaction_number: {
       type: String,
       required: true,
-      match: /^[0-9]+$/,
+      // match: /^[0-9]+$/,
       unique: true,
     },
 
