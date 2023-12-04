@@ -12,62 +12,61 @@ const createPayment = async (req, res, next) => {
     orderDetails,
   } = req.body;
 
-  console.log(req.body);
   const { userId, customer_details, products } = orderDetails;
   const user = userId;
 
   const expiration_month = expDate.slice(0, 2);
   const expiration_year = expDate.slice(-2);
 
+  const last_digits = creditNumber.slice(-4);
+
   const {
     user_address: { city, street, building, apartment },
   } = userDetails;
+
   const address = `${street} ${building}/${apartment}, ${city}`;
 
-  const requestBody = {
-    amount: cartTotal,
-    currency: "USD",
-    payment_method: {
-      type: "il_visa_card",
-      fields: {
-        number: creditNumber, //|| "4111111111111111",
-        expiration_month,
-        expiration_year,
-        name: userDetails.user_name,
-        cvv,
-        address,
-      },
-      metadata: {
-        merchant_defined: true,
-      },
-    },
-    error_payment_url: `${process.env.CLIENT_URL2}/rejected-payment`,
-    complete_payment_url: `${process.env.CLIENT_URL2}/success-payment`,
-    capture: true,
-  };
-
   try {
-    const response = await makeRequest("POST", "/v1/payments", requestBody);
-    const { id: paymentId, redirect_url: redirectUrl } = response.body.data;
-
-    const last_digits = creditNumber.slice(-4);
-
     const order = await Order.create({
       user,
       customer_details,
       payment_details: {
-        transaction_number: paymentId.split("_")[1],
+        transaction_number: "q234567" + Date.now(),
         terminal_number: "123456789",
-        transaction_date: response.body.data.created_at,
         last_digits,
       },
       products,
     });
 
+    const requestBody = {
+      amount: cartTotal,
+      currency: "USD",
+      payment_method: {
+        type: "il_visa_card",
+        fields: {
+          number: creditNumber,
+          expiration_month,
+          expiration_year,
+          name: userDetails.user_name,
+          cvv,
+          address,
+        },
+        metadata: {
+          merchant_defined: true,
+        },
+      },
+      error_payment_url: `${process.env.CLIENT_URL2}/rejected-payment`,
+      complete_payment_url: `${process.env.CLIENT_URL2}/success-payment?token=${order._id}`,
+      capture: true,
+    };
+
+    const response = await makeRequest("POST", "/v1/payments", requestBody);
+    const { redirect_url: redirectUrl } = response.body.data;
+
     res.send({
       paymentStatus: {
         redirectUrl,
-        paymentId,
+        token: order._id,
       },
     });
   } catch (error) {
