@@ -34,6 +34,41 @@ const createCustomerOrder = async (req, res, next) => {
   }
 };
 
+const updateOrderStatus = async (req, res, next) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    // Validate status
+    if (![1, 2, 3, 4].includes(status)) {
+      return res
+        .status(400)
+        .send({ success: false, message: "Invalid status value" });
+    }
+
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { order_status: status },
+      { new: true }
+    );
+
+    if (!updatedOrder) {
+      return res
+        .status(404)
+        .send({ success: false, message: "Order not found" });
+    }
+
+    return res.status(200).send({
+      success: true,
+      message: "Order status updated successfully",
+      order: updatedOrder,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createCustomerOrder,
+  updateOrderStatus,
 };
