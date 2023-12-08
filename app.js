@@ -10,6 +10,7 @@ const originCredentials = require("./middlewares/originCredentials");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users.routes");
+const adminRouter = require("./routes/admin.routes");
 const categoriesRouter = require("./routes/categories.routes");
 const productsRouter = require("./routes/products.routes");
 const refreshRouter = require("./routes/refresh.routes");
@@ -31,6 +32,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
+app.use("/admin", adminRouter);
 app.use("/users", usersRouter);
 app.use("/categories", categoriesRouter);
 app.use("/products", productsRouter);
