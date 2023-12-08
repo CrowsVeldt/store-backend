@@ -1,19 +1,19 @@
 const jwt = require("jsonwebtoken");
-const Manager = require("../models/Manager.model");
+const Admin = require("../models/Admin.model");
 
 module.exports = async (req, res, next) => {
   if (req.headers && req.headers.authorization) {
-    const managerToken = req.headers.authorization.split(" ")[1];
+    const adminToken = req.headers.authorization.split(" ")[1];
 
     try {
-      const payload = jwt.verify(managerToken, process.env.JWT_SECRET);
-      const manager = await Manager.findById(payload._id);
+      const payload = jwt.verify(adminToken, process.env.JWT_SECRET);
+      const admin = await Admin.findById(payload._id);
 
-      if (!manager) {
+      if (!admin) {
         return res.json({ success: false, message: "unauthorized access!" });
       }
 
-      req.manager._id = payload._id;
+      req.admin._id = payload._id;
 
       next();
     } catch (error) {
