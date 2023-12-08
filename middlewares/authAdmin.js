@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const Admin = require("../models/Admin.model");
 
 module.exports = async (req, res, next) => {
+  console.log(req.headers.authorization);
   if (req.headers && req.headers.authorization) {
     const adminToken = req.headers.authorization.split(" ")[1];
 
@@ -27,7 +28,7 @@ module.exports = async (req, res, next) => {
         });
       }
 
-      res.res.json({ success: false, message: "Internal server error!" });
+      res.json({ success: false, message: "Internal server error!" });
     }
   } else {
     res.json({ success: false, message: "unauthorized access!" });

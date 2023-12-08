@@ -57,6 +57,10 @@ const userSchema = new mongoose.Schema({
   user_avatar: {
     type: String,
   },
+  admin_id: {
+    type: mongoose.Types.ObjectId,
+    ref: "admin",
+  },
 
   token: { type: String },
 
