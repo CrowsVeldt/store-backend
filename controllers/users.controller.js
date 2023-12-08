@@ -1,4 +1,3 @@
-const UserModel = require("../models/User.model");
 const User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -54,7 +53,7 @@ const loginCustomer = async (req, res, next) => {
   try {
     const { user_email, user_password } = req.body;
 
-    const user = await UserModel.findOne({ user_email });
+    const user = await User.findOne({ user_email });
     if (!user) {
       throw new Error("Bad credentials");
     }
