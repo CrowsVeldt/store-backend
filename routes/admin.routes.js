@@ -3,13 +3,12 @@ const {
   addAdmin,
   getOrders,
   getUsers,
-  loginAdmin,
 } = require("../controllers/admin.controller");
 const authAdmin = require("../middlewares/authAdmin");
+const authUser = require("../middlewares/authUser");
 
-router.post("/login", loginAdmin);
-router.post("/add", authAdmin, addAdmin);
-router.get("/orders", authAdmin, getOrders);
-router.get("/users", authAdmin, getUsers);
+router.post("/add", authUser, authAdmin, addAdmin);
+router.get("/orders", authUser, authAdmin, getOrders);
+router.get("/users", authUser, authAdmin, getUsers);
 
 module.exports = router;
