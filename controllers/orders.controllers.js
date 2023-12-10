@@ -34,6 +34,27 @@ const createCustomerOrder = async (req, res, next) => {
   }
 };
 
+const getUserOrders = async (req, res, next) => {
+  const { userid } = req.params;
+  try {
+    const userOrders = await Order.find({ user: userid });
+
+    if (userOrders.length === 0) {
+      res
+        .status(400)
+        .send({ success: false, message: "No orders found for user" });
+    } else {
+      res.status(200).send({
+        success: true,
+        orders: userOrders,
+        message: "User orders found",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 const updateOrderStatus = async (req, res, next) => {
   try {
     const { orderId } = req.params;
@@ -70,5 +91,6 @@ const updateOrderStatus = async (req, res, next) => {
 
 module.exports = {
   createCustomerOrder,
+  getUserOrders,
   updateOrderStatus,
 };
