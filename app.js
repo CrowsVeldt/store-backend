@@ -18,6 +18,8 @@ const mailRouter = require("./routes/email.routes");
 const paymentsRouter = require("./routes/payments.routes");
 const ordersRouter = require("./routes/orders.routes");
 
+const demoUsers = require("./demoUsers");
+
 const app = express();
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -40,6 +42,8 @@ app.use("/refresh", refreshRouter);
 app.use("/mailer", mailRouter);
 app.use("/payments", paymentsRouter);
 app.use("/orders", ordersRouter);
+
+demoUsers();
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
