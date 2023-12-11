@@ -99,6 +99,7 @@ const loginCustomer = async (req, res, next) => {
         _id: user._id,
         user_name: user.user_name,
         user_email: user.user_email,
+        admin_id: user.admin_id,
         user_avatar: user.user_avatar,
       },
     });
