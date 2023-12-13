@@ -19,7 +19,7 @@ const demoUsers = async () => {
       });
 
       const adminUser = await User.create({
-        user_name: "admin user",
+        user_name: "demo admin",
         user_email: admin_email,
         user_password: "asd",
         user_phone: 1234567890,
