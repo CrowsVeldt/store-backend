@@ -49,8 +49,27 @@ const getOrders = async (req, res, next) => {
   }
 };
 
+const editUser = async (req, res, next) => {
+  const { userid } = req.params;
+
+  try {
+    const user = await User.findByIdAndUpdate(userid, req.body, {
+      new: true,
+    }).select(`-user_password -email_verify_token`);
+
+    if (!user) {
+      throw new Error("No such user");
+    }
+
+    res.status(200).send({ success: true, message: "User updated", user });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   addAdmin,
+  editUser,
   getUsers,
   getOrders,
 };
