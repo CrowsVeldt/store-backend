@@ -68,8 +68,6 @@ const addProduct = async (req, res) => {
       })
     );
 
-    console.log(categoriesObjectsArray);
-
     const newProduct = await Product.create({
       product_name,
       product_description,
@@ -113,26 +111,9 @@ const getProductById = async (req, res, next) => {
   }
 };
 
-const updateProduct = async (req, res, next) => {
-  // const { value } = req.body;
-  // console.log(req.body);
-  // try {
-  //   const product = await Product.findById(req?.params?.productId);
-  //   console.log(product);
-  //   return res.status(200).json({
-  //     success: true,
-  //     message: `Succeeded in updating product by id`,
-  //     product,
-  //   });
-  // } catch (error) {
-  //   return next(error);
-  // }
-};
-
 module.exports = {
   addProduct,
   getAllProductById,
   getAllProducts,
   getProductById,
-  updateProduct,
 };

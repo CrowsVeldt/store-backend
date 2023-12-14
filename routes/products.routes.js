@@ -3,7 +3,6 @@ const {
   addProduct,
   getAllProducts,
   getProductById,
-  updateProduct,
 } = require("../controllers/products.controller");
 // const authManager = require('../middlewares/authUser');
 

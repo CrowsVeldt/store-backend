@@ -64,7 +64,7 @@ const editProduct = async (req, res, next) => {
 
     res
       .status(200)
-      .send({ success: true, message: "Product udpated", product });
+      .send({ success: true, message: "Product updated", product });
   } catch (error) {
     next(error);
   }
