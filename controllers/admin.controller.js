@@ -1,6 +1,7 @@
 const Admin = require("../models/Admin.model");
-const User = require("../models/User.model");
 const Order = require("../models/Order.model");
+const Product = require("../models/Product.model");
+const User = require("../models/User.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -67,8 +68,29 @@ const editUser = async (req, res, next) => {
   }
 };
 
+const editProduct = async (req, res, next) => {
+  const { productid } = req.params;
+
+  try {
+    const product = await Product.findByIdAndUpdate(productid, req.body, {
+      new: true,
+    });
+
+    if (!product) {
+      throw new Error("No such product");
+    }
+
+    res
+      .status(200)
+      .send({ success: true, message: "Product udpated", product });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   addAdmin,
+  editProduct,
   editUser,
   getUsers,
   getOrders,

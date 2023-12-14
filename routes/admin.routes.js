@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const {
   addAdmin,
+  editProduct,
   editUser,
   getOrders,
   getUsers,
@@ -12,6 +13,7 @@ router.post("/add", authUser, authAdmin, addAdmin);
 router.get("/orders", authUser, authAdmin, getOrders);
 router.get("/users", authUser, authAdmin, getUsers);
 
-router.patch("/:userid/edit", authUser, authAdmin, editUser);
+router.patch("/:productid/edit/product", authUser, authAdmin, editProduct);
+router.patch("/:userid/edit/user", authUser, authAdmin, editUser);
 
 module.exports = router;
