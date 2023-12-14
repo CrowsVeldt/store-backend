@@ -5,12 +5,11 @@ const objectName = "product";
 
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find({}).populate("categories.category");
+    const products = await Product.find({}).populate("categories");
 
     return res.status(200).json({
       success: true,
       message: `success to find all ${objectName}s - for managers`,
-
       products,
     });
   } catch (error) {
