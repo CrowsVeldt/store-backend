@@ -56,7 +56,7 @@ const editProduct = async (req, res, next) => {
   try {
     const product = await Product.findByIdAndUpdate(productid, req.body, {
       new: true,
-    });
+    }).populate("categories");
 
     if (!product) {
       throw new Error("No such product");
