@@ -1,6 +1,7 @@
 const Admin = require("../models/Admin.model");
-const User = require("../models/User.model");
 const Order = require("../models/Order.model");
+const Product = require("../models/Product.model");
+const User = require("../models/User.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -31,19 +32,39 @@ const addAdmin = async (req, res, next) => {
   }
 };
 
-const getUsers = async (req, res, next) => {
+const editOrder = async (req, res, next) => {
+  const { orderid } = req.params;
+
   try {
-    const users = await User.find();
-    res.send({ data: users });
+    const order = await Order.findByIdAndUpdate(orderid, req.body, {
+      new: true,
+    });
+
+    if (!order) {
+      throw new Error("No such order");
+    }
+
+    res.status(200).send({ success: true, message: "Order udpated", order });
   } catch (error) {
     next(error);
   }
 };
 
-const getOrders = async (req, res, next) => {
+const editProduct = async (req, res, next) => {
+  const { productid } = req.params;
+
   try {
-    const orders = await Order.find();
-    res.status(200).send({ success: true, data: orders });
+    const product = await Product.findByIdAndUpdate(productid, req.body, {
+      new: true,
+    }).populate("categories");
+
+    if (!product) {
+      throw new Error("No such product");
+    }
+
+    res
+      .status(200)
+      .send({ success: true, message: "Product updated", product });
   } catch (error) {
     next(error);
   }
@@ -67,9 +88,29 @@ const editUser = async (req, res, next) => {
   }
 };
 
+const getOrders = async (req, res, next) => {
+  try {
+    const orders = await Order.find();
+    res.status(200).send({ success: true, data: orders });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getUsers = async (req, res, next) => {
+  try {
+    const users = await User.find();
+    res.send({ data: users });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   addAdmin,
+  editOrder,
+  editProduct,
   editUser,
-  getUsers,
   getOrders,
+  getUsers,
 };

@@ -20,4 +20,12 @@ const addCategory = async (req, res) => {
   }
 };
 
-module.exports = { addCategory };
+const getCategories = async (req, res, next) => {
+  try {
+    const categories = await Category.find({});
+    res.status(200).send({ success: true, categories });
+  } catch (error) {
+    next(error);
+  }
+};
+module.exports = { addCategory, getCategories };

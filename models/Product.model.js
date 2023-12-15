@@ -21,10 +21,8 @@ const productSchema = new mongoose.Schema({
 
   categories: [
     {
-      category: {
-        type: mongoose.Types.ObjectId,
-        ref: "categories",
-      },
+      type: mongoose.Types.ObjectId,
+      ref: "categories",
     },
   ],
 });
