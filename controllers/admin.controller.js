@@ -44,7 +44,7 @@ const editOrder = async (req, res, next) => {
       throw new Error("No such order");
     }
 
-    res.status(200).send({ success: true, message: "Order udpated", order });
+    res.status(200).send({ success: true, message: "Order updated", order });
   } catch (error) {
     next(error);
   }
