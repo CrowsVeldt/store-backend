@@ -87,9 +87,7 @@ const loginCustomer = async (req, res, next) => {
     res.cookie("token", refreshToken, {
       httpOnly: true,
       sameSite: "None", // required if domain of api and store/site is different
-      // ------------------------ //
-      // \/ FALSE ONLY FOR DEV \/ //
-      secure: false,
+      secure: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
 
