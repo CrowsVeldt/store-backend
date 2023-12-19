@@ -87,7 +87,7 @@ const loginCustomer = async (req, res, next) => {
     res.cookie("token", refreshToken, {
       httpOnly: true,
       sameSite: "None", // required if domain of api and store/site is different
-      secure: true,
+      secure: true, 
       maxAge: 24 * 60 * 60 * 1000,
     });
 
@@ -112,10 +112,6 @@ const loginCustomer = async (req, res, next) => {
 };
 
 const logoutCustomer = async (req, res, next) => {
-  // הניתוק משתמש צריך את הטוקן של המשתמש בצד הקליינט
-  // במידה והטוקנים הם מסוג ריפרש טוקן אז צריך למחוק אותם מהדאטאבייס
-
-  // קודם נבדוק אם קיים הדר של authorization
   if (req.headers && req.headers.authorization) {
     try {
       const token = req.headers.authorization.split(" ")[1]; // ['bearer', 'ghfh43$R#!']
@@ -125,7 +121,7 @@ const logoutCustomer = async (req, res, next) => {
           .send({ success: false, message: "Authorization failed!" });
       }
       const _id = req.user._id;
-      // TODO remove token from DB in user document
+      // TODO remove token from DB in user document?
 
       res.clearCookie("token");
 
@@ -186,9 +182,38 @@ const updateCustomer = async (req, res, next) => {
   }
 };
 
+const getUsers = async (req, res, next) => {
+  try {
+    const users = await User.find();
+    res.send({ data: users });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const editUser = async (req, res, next) => {
+  const { userid } = req.params;
+
+  try {
+    const user = await User.findByIdAndUpdate(userid, req.body, {
+      new: true,
+    }).select(`-user_password -email_verify_token`);
+
+    if (!user) {
+      throw new Error("No such user");
+    }
+
+    res.status(200).send({ success: true, message: "User updated", user });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   deleteCustomer,
   getUserInfo,
+  getUsers,
+  editUser,
   loginCustomer,
   logoutCustomer,
   registerCustomer,
