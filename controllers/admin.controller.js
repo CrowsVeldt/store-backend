@@ -32,24 +32,6 @@ const addAdmin = async (req, res, next) => {
   }
 };
 
-const editOrder = async (req, res, next) => {
-  const { orderid } = req.params;
-
-  try {
-    const order = await Order.findByIdAndUpdate(orderid, req.body, {
-      new: true,
-    });
-
-    if (!order) {
-      throw new Error("No such order");
-    }
-
-    res.status(200).send({ success: true, message: "Order updated", order });
-  } catch (error) {
-    next(error);
-  }
-};
-
 const editProduct = async (req, res, next) => {
   const { productid } = req.params;
 
@@ -70,18 +52,7 @@ const editProduct = async (req, res, next) => {
   }
 };
 
-const getOrders = async (req, res, next) => {
-  try {
-    const orders = await Order.find();
-    res.status(200).send({ success: true, data: orders });
-  } catch (error) {
-    next(error);
-  }
-};
-
 module.exports = {
   addAdmin,
-  editOrder,
   editProduct,
-  getOrders,
 };
