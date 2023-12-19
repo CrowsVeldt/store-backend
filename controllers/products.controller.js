@@ -110,9 +110,30 @@ const getProductById = async (req, res, next) => {
   }
 };
 
+const editProduct = async (req, res, next) => {
+  const { productid } = req.params;
+
+  try {
+    const product = await Product.findByIdAndUpdate(productid, req.body, {
+      new: true,
+    }).populate("categories");
+
+    if (!product) {
+      throw new Error("No such product");
+    }
+
+    res
+      .status(200)
+      .send({ success: true, message: "Product updated", product });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   addProduct,
   getAllProductById,
   getAllProducts,
   getProductById,
+  editProduct
 };

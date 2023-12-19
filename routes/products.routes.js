@@ -3,34 +3,19 @@ const {
   addProduct,
   getAllProducts,
   getProductById,
+  editProduct
 } = require("../controllers/products.controller");
-// const authManager = require('../middlewares/authUser');
+const authUser = require("../middlewares/authUser")
+const authAdmin = require("../middlewares/authAdmin")
 
-/* GET users listing. */
-
-/* Manager routes */
-// getProducts
-// getProductById
-// addProduct
-// updateProduct
-//router.put("/managers/update/product/:productId", updateProduct);
-// removeProduct
-router.get("/managers/all", getAllProducts);
-// router.get('/managers/:productId', getAllProductById);
-router.post("/managers", addProduct);
-// router.put('/managers', getAllProductById);
-// router.delete('/managers', getAllProductById);
-
-// // ----------------------------------------------------------
-
-// /* Customers routes */
-// // getAllProducts
 router.get("/customers/all", getAllProducts);
-// // getProductsById
 router.get("/customers/:productId", getProductById);
-// // queryProducts
 
-// router.get('/customers/all', getAllProducts);
-// // router.get('/customers/:productId', getAllProductById);
+router.get("/managers/all", getAllProducts);
+router.post("/managers", addProduct);
+
+router.patch("/:productid/admin/edit", authUser, authAdmin, editProduct);
+
+
 
 module.exports = router;
