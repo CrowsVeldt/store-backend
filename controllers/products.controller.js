@@ -1,9 +1,8 @@
 const Product = require("../models/Product.model");
-const Category = require("../models/Category.model");
 const mongoose = require("mongoose");
 const objectName = "product";
 
-const getAllProducts = async (req, res) => {
+const getAllProducts = async (req, res, next) => {
   try {
     const products = await Product.find({}).populate("categories");
 
@@ -13,14 +12,11 @@ const getAllProducts = async (req, res) => {
       products,
     });
   } catch (error) {
-    return res.status(500).json({
-      message: `error in get all ${objectName}s - for managers`,
-      error: error.message,
-    });
+    next(error);
   }
 };
 
-const getAllProductById = async (req, res) => {
+const getAllProductById = async (req, res, next) => {
   const productId = req.params.productId;
   try {
     const products = await Product.find(productId).populate(
@@ -33,14 +29,11 @@ const getAllProductById = async (req, res) => {
       data: products,
     });
   } catch (error) {
-    return res.status(500).json({
-      message: `error in get all ${objectName} - for managers`,
-      error: error.message,
-    });
+    next(error);
   }
 };
 
-const addProduct = async (req, res) => {
+const addProduct = async (req, res, next) => {
   const {
     product_name,
     product_description,
@@ -50,20 +43,22 @@ const addProduct = async (req, res) => {
   } = req.body;
 
   try {
-    // Using map to transform categories
+    // map over categories to return only the ObjecId
     const categoriesObjectsArray = await Promise.all(
       categories.map(async (category) => {
-        // Check if it's a valid ObjectId
-        if (mongoose.Types.ObjectId.isValid(category)) {
-          return { category: category };
-        } else {
-          const newCategory = await Category.findOneAndUpdate(
-            { category_name: category },
-            { category_name: category },
-            { upsert: true }
-          );
-          return { category: newCategory._id };
+        // Check is ObjectId valid
+        if (mongoose.Types.ObjectId.isValid(category._id)) {
+          return category._id;
         }
+        // else
+        // {
+        //   const newCategory = await Category.findOneAndUpdate(
+        //     { category_name: category },
+        //     { category_name: category },
+        //     { upsert: true }
+        //   );
+        //   return { category: newCategory._id };
+        // }
       })
     );
 
@@ -75,18 +70,15 @@ const addProduct = async (req, res) => {
       categories: categoriesObjectsArray,
     });
 
-    if (!newProduct) throw new Error("Couldn't create new product");
+    if (!newProduct) throw new Error("Failed to create new product");
 
     return res.send({
       success: true,
-      message: `Success to create product`,
+      message: `Created new product successfully`,
       data: newProduct,
     });
   } catch (error) {
-    return res.status(500).json({
-      message: `Error in creating product`,
-      error: error.message,
-    });
+    next(error);
   }
 };
 
@@ -135,5 +127,5 @@ module.exports = {
   getAllProductById,
   getAllProducts,
   getProductById,
-  editProduct
+  editProduct,
 };

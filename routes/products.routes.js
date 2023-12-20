@@ -12,7 +12,7 @@ router.get("/customers/all", getAllProducts);
 router.get("/customers/:productId", getProductById);
 
 router.get("/managers/all", getAllProducts);
-router.post("/managers", addProduct);
+router.post("/admin", addProduct);
 
 router.patch("/:productid/admin/edit", authUser, authAdmin, editProduct);
 
