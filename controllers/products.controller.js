@@ -102,7 +102,7 @@ const getProductById = async (req, res, next) => {
   }
 };
 
-const editProduct = async (req, res, next) => {
+const editProductById = async (req, res, next) => {
   const { productid } = req.params;
 
   try {
@@ -122,10 +122,32 @@ const editProduct = async (req, res, next) => {
   }
 };
 
+const removeProductById = async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const product = await Product.findByIdAndDelete(productId);
+    if (!product) {
+      error = new Error("Resource not found");
+      error.code = 401;
+      throw error;
+    }
+
+    res.clearCookie("token");
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Succesfully deleted product" });
+  } catch (error) {
+    next(error)
+  }
+};
+
+
 module.exports = {
   addProduct,
   getAllProductById,
   getAllProducts,
   getProductById,
-  editProduct,
+  editProductById,
+  removeProductById
 };
