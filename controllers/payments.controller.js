@@ -3,8 +3,8 @@ const Order = require("../models/Order.model");
 
 const createPayment = async (req, res, next) => {
   const {
-    cartDetails,
-    userDetails,
+    //cartDetails,
+    //userDetails,
     cartTotal,
     creditNumber,
     expDate,
@@ -20,9 +20,7 @@ const createPayment = async (req, res, next) => {
 
   const last_digits = creditNumber.slice(-4);
 
-  const {
-    user_address: { city, street, building, apartment },
-  } = userDetails;
+  const { city, street, building, apartment, customer_name } = customer_details.customer_address
 
   const address = `${street} ${building}/${apartment}, ${city}`;
 
@@ -47,7 +45,7 @@ const createPayment = async (req, res, next) => {
           number: creditNumber,
           expiration_month,
           expiration_year,
-          name: userDetails.user_name,
+          name: customer_name,
           cvv,
           address,
         },
