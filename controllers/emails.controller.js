@@ -14,6 +14,8 @@ const transporter = mailer.createTransport({
 const sendResetLink = async (req, res, next) => {
   const { user_email } = req.body;
 
+  if (!emailStructureValid(user_email)) throw new Error("Validation error")
+
   try {
     const user = await User.findOne({ user_email: user_email.toLowerCase() });
 
@@ -142,6 +144,8 @@ const updatePassword = async (req, res, next) => {
 
 const sendSupportTicket = async (req, res, next) => {
   const { user_email, user_name, message } = req.body;
+
+  if (!emailStructureValid(user_email)) throw new Error("Validation error")
 
   try {
     const emailOptions = {
