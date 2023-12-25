@@ -6,7 +6,7 @@ const User = require("../models/User.model");
 const transporter = mailer.createTransport({
   service: "gmail",
   auth: {
-    user: "storemail370@gmail.com",
+    user: process.env.SITE_MAIL,
     pass: process.env.MAILER_PASS,
   },
 });
