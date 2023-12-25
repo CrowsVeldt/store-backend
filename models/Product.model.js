@@ -14,7 +14,7 @@ const productSchema = new mongoose.Schema({
   product_price: {
     type: Number,
     required: true,
-    min: [1, "Must be from 1 and above"],
+    min: [1, "Must be 1 or above"],
   },
 
   product_image: { type: String },
