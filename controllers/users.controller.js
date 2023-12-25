@@ -1,6 +1,7 @@
 const User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const emailStructureValid = require("../validation/emailValidation");
 
 const deleteCustomer = async (req, res, next) => {
   try {
@@ -28,6 +29,8 @@ const registerCustomer = async (req, res, next) => {
   try {
     const { user_name, user_email, user_password, user_phone } = req.body;
 
+    if (!emailStructureValid(user_email)) throw new Error("Validation error");
+
     const user = await User.create({
       user_name,
       user_email,
@@ -48,10 +51,11 @@ const registerCustomer = async (req, res, next) => {
   }
 };
 
-// login
 const loginCustomer = async (req, res, next) => {
   try {
     const { user_email, user_password } = req.body;
+
+    if (!emailStructureValid(user_email)) throw new Error("Validation error");
 
     const user = await User.findOne({ user_email });
     if (!user) {
@@ -157,26 +161,28 @@ const getUserInfo = async (req, res, next) => {
 
 const updateCustomer = async (req, res, next) => {
   try {
-    if (req.params.id === req.user._id) {
-      const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-      });
+    if (!emailStructureValid(req.params.user_email)) throw new Error("Validation error")
 
-      return res.status(200).json({
-        success: true,
-        message: `Succeeded in updating customer by id`,
-        user: {
-          _id: user._id,
-          user_name: user.user_name,
-          user_phone: user.user_phone,
-          user_address: user.user_address,
-          user_email: user.user_email,
-          user_avatar: user.user_avatar,
-        },
-      });
-    } else {
-      return res.status(401).send({ message: "Unauthorized action" });
-    }
+      if (req.params.id === req.user._id) {
+        const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+          new: true,
+        });
+
+        return res.status(200).json({
+          success: true,
+          message: `Succeeded in updating customer by id`,
+          user: {
+            _id: user._id,
+            user_name: user.user_name,
+            user_phone: user.user_phone,
+            user_address: user.user_address,
+            user_email: user.user_email,
+            user_avatar: user.user_avatar,
+          },
+        });
+      } else {
+        return res.status(401).send({ message: "Unauthorized action" });
+      }
   } catch (error) {
     return next(error);
   }
