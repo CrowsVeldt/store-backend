@@ -145,7 +145,7 @@ const sendSupportTicket = async (req, res, next) => {
 
   try {
     const emailOptions = {
-      to: "storemail370@gmail.com",
+      to: process.env.SITE_MAIL,
       subject: `New support request from user ${user_email}`,
       html: `<p>name: ${user_name}</p>
                <p>email: ${user_email}</p>
