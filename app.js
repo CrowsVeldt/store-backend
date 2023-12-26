@@ -4,6 +4,7 @@ const cors = require("cors");
 const createError = require("http-errors");
 const logger = require("morgan");
 const path = require("path");
+const helmet = require("helmet")
 
 const corsOptions = require("./config/corsOptions");
 const originCredentials = require("./middlewares/originCredentials");
@@ -23,8 +24,9 @@ const demoUsers = require("./demoUsers");
 const app = express();
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "jade");
+// app.set("view engine", "jade");
 
+app.use(helmet())
 app.use(originCredentials);
 app.use(cors(corsOptions));
 app.use(logger("dev"));
