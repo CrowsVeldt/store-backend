@@ -10,12 +10,13 @@ const {
 } = require("../controllers/users.controller");
 const authAdmin = require("../middlewares/authAdmin");
 const authUser = require("../middlewares/authUser");
+const {emailValid, passwordValid, nameValid, phoneValid} = require("../middlewares/validateUser");
 
-router.post("/customers/register", registerCustomer);
-router.post("/customers/login", loginCustomer);
+router.post("/customers/register", emailValid(), passwordValid(), nameValid(), phoneValid(), registerCustomer);
+router.post("/customers/login", emailValid(), passwordValid(), loginCustomer);
 router.post("/customers/logout", authUser, logoutCustomer);
 
-router.put("/customers/:id", authUser, updateCustomer);
+router.put("/customers/:id", emailValid(), nameValid(), phoneValid(), authUser, updateCustomer);
 
 router.delete("/customers/:id", authUser, deleteCustomer);
 

@@ -1,11 +1,9 @@
 const Admin = require("../models/Admin.model");
 const User = require("../models/User.model");
-const emailStructureValid = require("../validation/emailValidation");
 
 const addAdmin = async (req, res, next) => {
   const { admin_name, admin_email, admin_password, admin_phone } = req.body;
 
-  if (!emailStructureValid(admin_email)) throw new Error("Validation error")
   try {
     const admin = await Admin.create({
       admin_name,
