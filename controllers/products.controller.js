@@ -138,10 +138,9 @@ const removeProductById = async (req, res, next) => {
       .status(200)
       .json({ success: true, message: "Succesfully deleted product" });
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
-
 
 module.exports = {
   addProduct,
@@ -149,5 +148,5 @@ module.exports = {
   getAllProducts,
   getProductById,
   editProductById,
-  removeProductById
+  removeProductById,
 };

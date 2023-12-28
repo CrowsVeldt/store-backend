@@ -1,7 +1,7 @@
 const User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const validatorInputCheck = require ("../utils/validatorInputCheck")
+const validatorInputCheck = require("../utils/validatorInputCheck");
 
 const deleteCustomer = async (req, res, next) => {
   try {
@@ -27,7 +27,7 @@ const deleteCustomer = async (req, res, next) => {
 
 const registerCustomer = async (req, res, next) => {
   try {
-    validatorInputCheck(req)
+    validatorInputCheck(req);
 
     const { user_name, user_email, user_password, user_phone } = req.body;
 
@@ -53,7 +53,7 @@ const registerCustomer = async (req, res, next) => {
 
 const loginCustomer = async (req, res, next) => {
   try {
-    validatorInputCheck(req)
+    validatorInputCheck(req);
 
     const { user_email, user_password } = req.body;
 
@@ -162,7 +162,7 @@ const getUserInfo = async (req, res, next) => {
 */
 
 const updateCustomer = async (req, res, next) => {
-  validatorInputCheck(req)
+  validatorInputCheck(req);
   try {
     if (req.params.id === req.user._id) {
       const user = await User.findByIdAndUpdate(req.params.id, req.body, {
