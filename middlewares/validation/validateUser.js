@@ -18,12 +18,13 @@ const nameValid = () =>
 
 const phoneValid = () => body("user_phone").isNumeric().escape();
 
-const avatarValid = () => {}
-const addressValid = () => {}
+const avatarValid = () => body("user_avatar").isBase64().escape();
+const addressValid = () => {};
 
 module.exports = {
-  nameValid,
+  avatarValid,
   emailValid,
+  nameValid,
   passwordValid,
   phoneValid,
 };

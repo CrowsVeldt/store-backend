@@ -67,7 +67,7 @@ const loginCustomer = async (req, res, next) => {
       throw new Error("Bad credentials");
     }
 
-    // user login success
+    // on user login success
     let payload = {
       _id: user._id,
     };
@@ -199,10 +199,10 @@ const getUsers = async (req, res, next) => {
 };
 
 const editUser = async (req, res, next) => {
-  const { userid } = req.params;
+  const { id } = req.params;
 
   try {
-    const user = await User.findByIdAndUpdate(userid, req.body, {
+    const user = await User.findByIdAndUpdate(id, req.body, {
       new: true,
     }).select(`-user_password -email_verify_token`);
 
