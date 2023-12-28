@@ -7,7 +7,7 @@ const {
   emailValid,
   passwordValid,
   phoneValid,
-} = require("../middleware/validation");
+} = require("../middlewares/validation/validateAdmin");
 
 router.post(
   "/add",
