@@ -15,7 +15,7 @@ const {
   passwordValid,
   nameValid,
   phoneValid,
-  avatarValid
+  avatarValid,
 } = require("../middlewares/validation/validateUser");
 
 router.post(
@@ -41,15 +41,6 @@ router.put(
 router.delete("/customers/:id", authUser, deleteCustomer);
 
 router.get("/admin", authUser, authAdmin, getUsers);
-router.patch(
-  "/:id/admin/edit",
-  emailValid(),
-  nameValid(),
-  phoneValid(),
-  avatarValid(),
-  authUser,
-  authAdmin,
-  editUser
-);
+router.patch("/:id/admin/edit", authUser, authAdmin, editUser);
 
 module.exports = router;
