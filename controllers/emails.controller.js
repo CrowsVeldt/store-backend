@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mailer = require("nodemailer");
 const User = require("../models/User.model");
+const validatorInputCheck = require("../utils/validatorInputCheck")
 
 const transporter = mailer.createTransport({
   service: "gmail",
@@ -12,6 +13,7 @@ const transporter = mailer.createTransport({
 });
 
 const sendResetLink = async (req, res, next) => {
+  validatorInputCheck(req)
   const { user_email } = req.body;
 
   try {
@@ -63,6 +65,7 @@ const sendResetLink = async (req, res, next) => {
 };
 
 const forgotPassword = async (req, res, next) => {
+
   const { id } = req.params;
   const { email_verify_token } = req.headers;
 
@@ -94,6 +97,7 @@ const forgotPassword = async (req, res, next) => {
 };
 
 const updatePassword = async (req, res, next) => {
+  validatorInputCheck(req)
   const { id } = req.params;
   const { user_password, email_verify_token } = req.body;
 
@@ -141,6 +145,8 @@ const updatePassword = async (req, res, next) => {
 };
 
 const sendSupportTicket = async (req, res, next) => {
+  validatorInputCheck(req)
+
   const { user_email, user_name, message } = req.body;
 
   try {
