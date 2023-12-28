@@ -1,13 +1,14 @@
 const { body } = require("express-validator");
 
-const emailValid = () => body("user_email").notEmpty().isEmail().isLowercase();
+const emailValid = () =>
+  body("user_email").trim().notEmpty().isEmail().isLowercase().escape();
 
 const passwordValid = () =>
   body("user_password")
     .trim()
     .notEmpty()
     .isString()
-    .isLength({ min: 8, max: 36 })
+    .isLength({ min: 8, max: 64 })
     .escape();
 
 const nameValid = () =>
@@ -16,11 +17,11 @@ const nameValid = () =>
     .optional()
     .notEmpty()
     .isString()
-    .isLength({ min: 4, max: 24 })
+    .isLength({ min: 4, max: 32 })
     .escape();
 
 const phoneValid = () =>
-  body("user_phone").optional().trim().isNumeric().escape();
+  body("user_phone").optional().trim().notEmpty().isNumeric().escape();
 
 const avatarValid = () =>
   body("user_avatar").optional().trim().isBase64().escape();

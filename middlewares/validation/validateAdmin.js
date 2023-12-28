@@ -9,11 +9,7 @@ const nameValid = () =>
     .escape();
 
 const emailValid = () =>
-  body("admin_email")
-    .trim()
-    .notEmpty()
-    .isEmail()
-    .escape();
+  body("admin_email").trim().notEmpty().isEmail().isLowercase().escape();
 
 const passwordValid = () =>
   body("admin_password")
@@ -23,11 +19,12 @@ const passwordValid = () =>
     .isLength({ min: 8, max: 64 })
     .escape();
 
-const phoneValid = () => body("admin_phone").trim().notEmpty().isNumeric();
+const phoneValid = () =>
+  body("admin_phone").trim().notEmpty().isNumeric().escape();
 
 module.exports = {
   nameValid,
-    emailValid,
-    passwordValid,
+  emailValid,
+  passwordValid,
   phoneValid,
 };
