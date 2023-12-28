@@ -6,6 +6,8 @@ const adminSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+    min: 4,
+    max: 32,
   },
   admin_email: {
     type: String,
@@ -16,6 +18,7 @@ const adminSchema = new mongoose.Schema({
   admin_password: {
     type: String,
     required: true,
+    min: 8,
   },
   admin_phone: {
     type: String,
