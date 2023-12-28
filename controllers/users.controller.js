@@ -1,7 +1,7 @@
 const User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const emailStructureValid = require("../validation/emailValidation");
+const validatorInputCheck = require("../utils/validatorInputCheck");
 
 const deleteCustomer = async (req, res, next) => {
   try {
@@ -27,9 +27,9 @@ const deleteCustomer = async (req, res, next) => {
 
 const registerCustomer = async (req, res, next) => {
   try {
-    const { user_name, user_email, user_password, user_phone } = req.body;
+    validatorInputCheck(req);
 
-    if (!emailStructureValid(user_email)) throw new Error("Validation error");
+    const { user_name, user_email, user_password, user_phone } = req.body;
 
     const user = await User.create({
       user_name,
@@ -53,9 +53,9 @@ const registerCustomer = async (req, res, next) => {
 
 const loginCustomer = async (req, res, next) => {
   try {
-    const { user_email, user_password } = req.body;
+    validatorInputCheck(req);
 
-    if (!emailStructureValid(user_email)) throw new Error("Validation error");
+    const { user_email, user_password } = req.body;
 
     const user = await User.findOne({ user_email });
     if (!user) {
@@ -67,7 +67,7 @@ const loginCustomer = async (req, res, next) => {
       throw new Error("Bad credentials");
     }
 
-    // user login success
+    // on user login success
     let payload = {
       _id: user._id,
     };
@@ -136,6 +136,7 @@ const logoutCustomer = async (req, res, next) => {
   }
 };
 
+/*
 const getUserInfo = async (req, res, next) => {
   const { _id } = req.user;
   try {
@@ -158,31 +159,31 @@ const getUserInfo = async (req, res, next) => {
     next(error);
   }
 };
+*/
 
 const updateCustomer = async (req, res, next) => {
+  validatorInputCheck(req);
   try {
-    if (!emailStructureValid(req.params.user_email)) throw new Error("Validation error")
+    if (req.params.id === req.user._id) {
+      const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+      });
 
-      if (req.params.id === req.user._id) {
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-          new: true,
-        });
-
-        return res.status(200).json({
-          success: true,
-          message: `Succeeded in updating customer by id`,
-          user: {
-            _id: user._id,
-            user_name: user.user_name,
-            user_phone: user.user_phone,
-            user_address: user.user_address,
-            user_email: user.user_email,
-            user_avatar: user.user_avatar,
-          },
-        });
-      } else {
-        return res.status(401).send({ message: "Unauthorized action" });
-      }
+      return res.status(200).json({
+        success: true,
+        message: `Succeeded in updating customer by id`,
+        user: {
+          _id: user._id,
+          user_name: user.user_name,
+          user_phone: user.user_phone,
+          user_address: user.user_address,
+          user_email: user.user_email,
+          user_avatar: user.user_avatar,
+        },
+      });
+    } else {
+      return res.status(401).send({ message: "Unauthorized action" });
+    }
   } catch (error) {
     return next(error);
   }
@@ -198,10 +199,10 @@ const getUsers = async (req, res, next) => {
 };
 
 const editUser = async (req, res, next) => {
-  const { userid } = req.params;
+  const { id } = req.params;
 
   try {
-    const user = await User.findByIdAndUpdate(userid, req.body, {
+    const user = await User.findByIdAndUpdate(id, req.body, {
       new: true,
     }).select(`-user_password -email_verify_token`);
 
@@ -217,7 +218,7 @@ const editUser = async (req, res, next) => {
 
 module.exports = {
   deleteCustomer,
-  getUserInfo,
+  //getUserInfo,
   getUsers,
   editUser,
   loginCustomer,

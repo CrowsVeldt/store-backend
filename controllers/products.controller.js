@@ -1,6 +1,6 @@
 const Product = require("../models/Product.model");
 const mongoose = require("mongoose");
-const objectName = "product";
+const validatorInputCheck = require("../utils/validatorInputCheck")
 
 const getAllProducts = async (req, res, next) => {
   try {
@@ -8,7 +8,7 @@ const getAllProducts = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      message: `success to find all ${objectName}s - for managers`,
+      message: `success finding all products - for managers`,
       products,
     });
   } catch (error) {
@@ -16,6 +16,7 @@ const getAllProducts = async (req, res, next) => {
   }
 };
 
+/*
 const getAllProductById = async (req, res, next) => {
   const productId = req.params.productId;
   try {
@@ -25,13 +26,14 @@ const getAllProductById = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      message: `success to find all ${objectName} - for managers`,
+      message: `success finding all products - for managers`,
       data: products,
     });
   } catch (error) {
     next(error);
   }
 };
+*/
 
 const addProduct = async (req, res, next) => {
   const {
@@ -138,16 +140,15 @@ const removeProductById = async (req, res, next) => {
       .status(200)
       .json({ success: true, message: "Succesfully deleted product" });
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 
-
 module.exports = {
   addProduct,
-  getAllProductById,
+  //getAllProductById,
   getAllProducts,
   getProductById,
   editProductById,
-  removeProductById
+  removeProductById,
 };
