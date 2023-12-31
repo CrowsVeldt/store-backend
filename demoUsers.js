@@ -14,14 +14,14 @@ const demoUsers = async () => {
       const adminAdmin = await Admin.create({
         admin_name: "admin user",
         admin_email,
-        admin_password: "asd",
+        admin_password: "asdfgh123",
         admin_phone: 1234567890,
       });
 
       const adminUser = await User.create({
         user_name: "demo admin",
         user_email: admin_email,
-        user_password: "asd",
+        user_password: "asdfgh123",
         user_phone: 1234567890,
         user_address: {
           city: "gotham",
@@ -42,7 +42,7 @@ const demoUsers = async () => {
       const regularUser = await User.create({
         user_name: "demo user",
         user_email,
-        user_password: "asd",
+        user_password: "asdfgh123",
         user_phone: 1234567890,
         user_address: {
           city: "metropolis",
