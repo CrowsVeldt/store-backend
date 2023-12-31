@@ -9,7 +9,7 @@ It is intended to be a fully-functional, if basic, store backend.
 - Express, for the server
 - Mongoose, for DB access and management
 - Helmet, for security
-- Validatorjs, for input validation
+- express-validator, for input validation
 
 ## Notes
 
