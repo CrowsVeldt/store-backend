@@ -16,7 +16,6 @@ const getAllProducts = async (req, res, next) => {
   }
 };
 
-/*
 const getAllProductById = async (req, res, next) => {
   const productId = req.params.productId;
   try {
@@ -33,7 +32,6 @@ const getAllProductById = async (req, res, next) => {
     next(error);
   }
 };
-*/
 
 const addProduct = async (req, res, next) => {
   const {
@@ -88,7 +86,7 @@ const getProductById = async (req, res, next) => {
   const { productId } = req.params;
   try {
     const product = await Product.findById(productId).populate(
-      "categories.category"
+      "categories"
     );
 
     return res.status(200).json({
@@ -146,7 +144,6 @@ const removeProductById = async (req, res, next) => {
 
 module.exports = {
   addProduct,
-  //getAllProductById,
   getAllProducts,
   getProductById,
   editProductById,

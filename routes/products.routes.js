@@ -2,7 +2,7 @@ const router = require("express").Router();
 const {
   addProduct,
   getAllProducts,
-  // getProductById,
+  getProductById,
   editProductById,
   removeProductById,
 } = require("../controllers/products.controller");
@@ -17,7 +17,7 @@ const {
 } = require("../middlewares/validation/validateProduct");
 
 router.get("/customers/all", getAllProducts);
-//router.get("/customers/:productId", getProductById);
+router.get("/customers/:productId", getProductById);
 
 router.get("/managers/all", getAllProducts);
 
