@@ -22,6 +22,8 @@ const ordersRouter = require("./routes/orders.routes");
 const demoUsers = require("./demoUsers");
 
 const app = express();
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "jade");
 
 app.use(helmet())
 app.use(originCredentials);
